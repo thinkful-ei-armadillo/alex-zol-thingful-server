@@ -11,15 +11,15 @@ function requireAuth(req, res, next){
     bearerToken = authToken.slice(7, authToken.length);
   }
   const [tokenUsername, tokenPassword] = AuthService.parseBasicToken(bearerToken);
-  console.log(tokenUsername, tokenPassword);
+  // console.log(tokenUsername, tokenPassword);
   if(!tokenUsername || !tokenPassword){
-    return res.status(401).json({error: 'Unauthorized request a'});
+    return res.status(401).json({error: 'Unauthorized request'});
   }
 
   AuthService.getUserWithUsername(req.app.get('db'), tokenUsername)
     .then(user => {
       if(!user || user.password !== tokenPassword) {
-        return res.status(401).json({error: 'Unauthorized request b'});
+        return res.status(401).json({error: 'Unauthorized request'});
       }
       req.user=user;
       next();
